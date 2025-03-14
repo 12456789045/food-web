@@ -1,0 +1,118 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <title>Foodie - Delicious Delivered</title>
+  <link rel="stylesheet" href="style.css">
+</head>
+<body>
+  <!-- Header -->
+  <header class="header">
+    <div class="logo">🍔 Foodie</div>
+    <nav class="nav">
+      <a href="#home">Home</a>
+      <a href="#categories">Categories</a>
+      <a href="#restaurants">Restaurants</a>
+      <a href="#cart">Cart</a>
+      <a href="#account" onclick="showAccountForm()">Account</a>
+    </nav>
+  </header><section id="create-account-section" style="display: none;">
+    <h2>Create Your Account</h2>
+    <form id="create-account-form" onsubmit="createAccount(); return false;">
+      <label for="username">Username:</label>
+      <input type="text" id="username" placeholder="Enter your username" required>
+      <label for="email">Email:</label>
+      <input type="email" id="email" placeholder="Enter your email" required>
+      <button type="submit">Create Account</button>
+    </form>
+  </section>
+
+
+  <!-- Home Section -->
+  <section id="home" class="hero">
+    <div class="hero-content">
+      <h1>Welcome to Foodie</h1>
+      <p>Craving something delicious? Get food delivered from the best restaurants near you!</p>
+      <button onclick="filterByCategory('all')">Explore Restaurants</button>
+    </div>
+  </section>
+
+  <!-- Categories Section -->
+  <section id="categories" class="categories">
+    <h2>Browse by Categories</h2>
+    <div class="category-buttons">
+      <button onclick="filterByCategory('all')">All</button>
+      <button onclick="filterByCategory('Pizza')">Pizza</button>
+      <button onclick="filterByCategory('Burgers')">Burgers</button>
+      <button onclick="filterByCategory('Desserts')">Desserts</button>
+    </div>
+  </section>
+
+  <!-- Restaurants Section -->
+  <section id="restaurants" class="restaurants">
+    <h2>Restaurants</h2>
+    <p>Find a restaurant that matches your cravings:</p>
+    <div id="restaurant-list"></div>
+  </section>
+
+  <!-- Cart Section -->
+  <section id="cart" class="cart">
+    <h2>Your Cart</h2>
+    <div id="cart-items"></div>
+    <button onclick="checkout()" class="checkout-btn">Proceed to Checkout</button>
+  </section><section id="account-address">
+    <h2>Your Address</h2>
+    <form id="address-form">
+      <label for="address-line1">Address Line 1:</label>
+      <input type="text" id="address-line1" placeholder="House/Apartment, Street" required />
+  
+      <label for="address-line2">Address Line 2 (Optional):</label>
+      <input type="text" id="address-line2" placeholder="Landmark, etc." />
+  
+      <label for="city">City:</label>
+      <input type="text" id="city" placeholder="City" required />
+  
+      <label for="state">State:</label>
+      <input type="text" id="state" placeholder="State" required />
+  
+      <label for="zip-code">ZIP Code:</label>
+      <input type="text" id="zip-code" placeholder="ZIP Code" required />
+  
+      <button type="submit">Save Address</button>
+    </form>
+  </section>
+  
+
+  <!-- Payment Section -->
+  <section id="payment-section" class="payment-section" style="display: none;">
+    <h2>Complete Your Payment</h2>
+    <form id="payment-form">
+      <label for="card-number">Card Number:</label>
+      <input type="text" id="card-number" placeholder="1234 5678 9012 3456" required>
+      <label for="expiry-date">Expiry Date:</label>
+      <input type="text" id="expiry-date" placeholder="MM/YY" required>
+      <label for="cvv">CVV:</label>
+      <input type="text" id="cvv" placeholder="123" required>
+      <button type="submit" class="pay-btn">Pay Now</button>
+    </form>
+  </section>
+
+  <footer class="footer">
+    <p>© 2024 Foodie | Designed for food lovers</p>
+    <!-- Social Media Icons -->
+    <div class="social-icons">
+      <a href="https://www.instagram.com" target="_blank">
+          <i class="fab fa-instagram"></i>
+      </a>
+      <a href="https://www.twitter.com" target="_blank">
+          <i class="fab fa-twitter"></i>
+      </a>
+      <a href="https://wa.me/your-whatsapp-number" target="_blank">
+          <i class="fab fa-whatsapp"></i>
+      </a>
+  </footer>
+
+  <script src="scripts.js"></script>
+</body>
+</html>
