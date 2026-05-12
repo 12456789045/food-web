@@ -1,0 +1,1980 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+<meta charset="UTF-8" />
+<meta name="viewport" content="width=device-width, initial-scale=1.0" />
+<title>Zomato Ultra-Premium App</title>
+<link href="https://fonts.googleapis.com/css2?family=Poppins:wght@400;600;700;800&display=swap" rel="stylesheet">
+<style>
+*{margin:0;padding:0;box-sizing:border-box;font-family:'Poppins',sans-serif}
+body{background:#f5f7fb;color:#333;line-height:1.4;}
+header{
+  padding:12px 16px;background:rgba(255,255,255,0.95);
+  backdrop-filter:blur(8px);border-bottom:1px solid rgba(0,0,0,0.05);
+  display:flex;align-items:center;justify-content:space-between;gap:12px;flex-wrap:wrap;position:sticky;top:0;z-index:1000;
+}
+.header-left{display:flex;align-items:center;gap:12px;min-width:0;}
+.logo{font-size:20px;font-weight:800;background:linear-gradient(45deg,#ff4e50,#f9d423);-webkit-background-clip:text;color:transparent;cursor:pointer;white-space:nowrap;}
+.search-field{
+  max-width:220px;width:100%;padding:8px 10px;border:1px solid #eee;border-radius:10px;font-size:13px;background:#fff;
+  box-shadow:0 1px 4px rgba(0,0,0,0.04);
+}
+.header-right{display:flex;align-items:center;gap:8px;flex-shrink:0;white-space:nowrap;}
+nav.main-nav{display:flex;gap:8px;align-items:center;}
+nav.main-nav a{color:#444;text-decoration:none;font-weight:600;font-size:14px;padding:6px 8px;border-radius:8px;}
+nav.main-nav a:hover{color:#fff;background:#ff4e50;}
+.cart-btn{position:relative;padding:8px 10px;border-radius:10px;border:1px solid #eee;background:#fff;cursor:pointer;}
+.cart-count{position:absolute;top:-6px;right:-6px;background:#ff4e50;color:#fff;border-radius:50%;width:20px;height:20px;display:flex;align-items:center;justify-content:center;font-size:12px;font-weight:700;}
+
+/* SEARCH */
+.search-box{width:50%;}
+.search-box input{width:100%;padding:10px 12px;border:1px solid #ddd;border-radius:10px;font-size:14px;background:rgba(255,255,255,0.9);}
+
+/* CATEGORY */
+.category-section{padding:18px 14px;display:flex;gap:12px;overflow-x:auto;}
+.category{flex:0 0 110px;text-align:center;padding:12px;border-radius:12px;background:linear-gradient(135deg,#ffffff,#eef1f7);cursor:pointer;transition:.2s;box-shadow:0 4px 8px rgba(0,0,0,.04);font-size:14px;}
+.category:hover{transform:translateY(-4px);}
+
+/* SECTION TITLE */
+.section-title{font-size:20px;font-weight:700;margin:12px 14px;background:linear-gradient(45deg,#ff512f,#dd2476);-webkit-background-clip:text;color:transparent;}
+
+/* RESTAURANTS */
+.restaurant-list{padding:12px;display:grid;grid-template-columns:repeat(auto-fit,minmax(240px,1fr));gap:14px;}
+.restaurant-card{border-radius:12px;background:rgba(255,255,255,0.95);overflow:hidden;box-shadow:0 6px 18px rgba(0,0,0,.06);transition:.25s;cursor:pointer;display:flex;flex-direction:column;}
+.restaurant-card:hover{transform:translateY(-6px) scale(1.01);}
+.restaurant-card img{width:100%;height:160px;object-fit:cover;}
+.info{padding:12px;}
+.rating{background:linear-gradient(45deg,#16a085,#27ae60);padding:6px 10px;color:#fff;border-radius:10px;font-size:13px;}
+.tag{font-size:13px;color:#666;}
+
+/* ACCOUNT & PAYMENT */
+#home,#account,#payment,#dashboard{padding: 20px;}
+#account,#payment,#dashboard{display:none;}
+.section-title{margin-left:25%;style="Bold";font-size:22px;}
+.input{margin-bottom:12px;}
+.input input{width:50%;padding: 10px;border-radius:10px;border:1px solid #ddd;position: center;margin-left: 25%;}
+.btn{padding:10px 14px;border:none;border-radius:10px;background:#ff4e50;color:#fff;font-weight:600;cursor:pointer;margin-left: 25%;}
+.btn:hover{opacity:0.95;}
+.dashboard-box{padding:14px;background:#fff;border-radius:12px;margin-bottom:12px;box-shadow:0 6px 18px rgba(0,0,0,0.04);}
+
+/* DASHBOARD LAYOUT */
+.dashboard-grid{display:grid;grid-template-columns:1fr 320px;gap:16px;align-items:start;}
+.dashboard-main{display:flex;flex-direction:column;gap:12px;}
+.dashboard-side{display:flex;flex-direction:column;gap:12px;}
+
+/* lists */
+.list{display:flex;flex-direction:column;gap:10px;}
+.list-item{display:flex;gap:10px;align-items:center;padding:10px;border-radius:10px;background:linear-gradient(180deg,#fff,#fbfbfb);border:1px solid #f0f0f0;}
+.list-item img{width:64px;height:48px;object-fit:cover;border-radius:8px;}
+.item-info{flex:1;}
+.item-title{font-weight:700;font-size:14px;}
+.item-meta{font-size:12px;color:#666;margin-top:4px;}
+.small-btn{padding:8px 10px;border-radius:8px;border:1px solid #eee;background:#fff;cursor:pointer;font-size:13px;}
+.small-btn.primary{background:#ff4e50;color:#fff;border:none}
+
+/* favorites */
+.fav {font-size:18px;color:#ffb400;cursor:pointer}
+
+/* modal + menu styles */
+.modal-backdrop{position:fixed;inset:0;background:rgba(0,0,0,0.45);display:none;align-items:center;justify-content:center;padding:20px;z-index:2000;}
+.modal{background:#fff;border-radius:12px;max-width:720px;width:100%;max-height:90vh;overflow:auto;padding:16px;box-shadow:0 12px 40px rgba(0,0,0,0.18);}
+.menu-grid{display:grid;grid-template-columns:1fr;gap:8px;margin-top:10px;}
+.menu-item{display:flex;align-items:center;gap:12px;padding:10px;border-radius:10px;border:1px solid #f0f0f0;background:#fff;}
+.menu-item .mi-info{flex:1;}
+.qty{display:flex;gap:6px;align-items:center;}
+.qty button{padding:6px 8px;border-radius:8px;border:1px solid #eee;background:#fff;cursor:pointer;}
+.item-price{font-weight:700;color:#333}
+.modal-head{display:flex;justify-content:space-between;align-items:center;gap:12px}
+
+/* responsive */
+@media (max-width:1000px){
+  .dashboard-grid{grid-template-columns:1fr 300px;}
+  .search-field{max-width:160px;}
+}
+@media (max-width:800px){
+  .dashboard-grid{grid-template-columns:1fr; }
+  header{flex-direction:column;align-items:flex-start;gap:10px;padding:12px;}
+  nav.main-nav{width:100%;gap:6px;overflow:auto;}
+  .restaurant-card img{height:140px;}
+}
+
+/* tiny adjustments */
+footer{padding:14px;text-align:center;color:#666;}
+</style>
+
+<script>
+function showPage(page){
+  ['home','account','payment','dashboard'].forEach(id=>{
+    const el = document.getElementById(id);
+    if(el) el.style.display = (id === page) ? 'block' : 'none';
+  });
+  window.scrollTo(0,0);
+}
+
+function filterCategory(cat){
+  const cards = document.querySelectorAll('.restaurant-card');
+  cards.forEach(card=>{
+    const cardCat = (card.dataset.cat || 'all').toLowerCase();
+    card.style.display = (cat === 'all' || cardCat === cat) ? 'block' : 'none';
+  });
+}
+
+/* --- data and interactivity --- */
+const sampleRestaurants = [
+  {id:1,name:"Spice Hub",cat:"indian",rating:4.5,img:"https://source.unsplash.com/600x400/?indian,food"},
+  {id:2,name:"Pizza Palace",cat:"pizza",rating:4.6,img:"https://source.unsplash.com/600x400/?pizza"},
+  {id:3,name:"Burger House",cat:"burger",rating:4.4,img:"https://source.unsplash.com/600x400/?burger"},
+  {id:4,name:"Green Bowl",cat:"healthy",rating:4.7,img:"https://source.unsplash.com/600x400/?salad"},
+  {id:5,name:"Cafe Delight",cat:"cafe",rating:4.3,img:"https://source.unsplash.com/600x400/?cafe"},
+  // add more entries as needed
+];
+
+/* sample menus keyed by restaurant id */
+const sampleMenus = {
+  1: [
+    {id:'1-1', name:'Chicken Biryani', price:11, tags:'Spicy'},
+    {id:'1-2', name:'Paneer Butter Masala', price:9, tags:'Vegetarian'},
+    {id:'1-3', name:'Garlic Naan', price:2.5, tags:''}
+  ],
+  2: [
+    {id:'2-1', name:'Margherita', price:8, tags:'Vegetarian'},
+    {id:'2-2', name:'Pepperoni', price:10, tags:''},
+    {id:'2-3', name:'Four Cheese', price:11, tags:'Vegetarian'}
+  ],
+  3: [
+    {id:'3-1', name:'Classic Beef Burger', price:9, tags:''},
+    {id:'3-2', name:'Crispy Chicken Burger', price:9.5, tags:''},
+    {id:'3-3', name:'Fries', price:3, tags:'Vegan'}
+  ],
+  4: [
+    {id:'4-1', name:'Quinoa Bowl', price:9.5, tags:'Vegan'},
+    {id:'4-2', name:'Caesar Salad', price:8, tags:''},
+    {id:'4-3', name:'Detox Smoothie', price:4.5, tags:'Vegan'}
+  ],
+  5: [
+    {id:'5-1', name:'Cold Brew Coffee', price:3.5, tags:''},
+    {id:'5-2', name:'Blueberry Muffin', price:2.9, tags:''},
+    {id:'5-3', name:'Breakfast Wrap', price:6.5, tags:''}
+  ]
+};
+
+let cart = []; // {item, qty, restaurant}
+let favorites = new Set();
+let recentOrders = [];
+
+function updateCartCount(){
+  const count = cart.reduce((s,i)=>s+i.qty,0);
+  const el = document.querySelector('.cart-count');
+  if(el) el.textContent = count;
+}
+
+/* open menu modal for a restaurant id */
+function openMenuFor(id, name){
+  const menu = sampleMenus[id] || [
+    {id:`${id}-1`, name:'Chef Special', price:7.5, tags:''},
+    {id:`${id}-2`, name:'House Side', price:3.5, tags:''}
+  ];
+  const backdrop = document.getElementById('menu-modal-backdrop');
+  const modal = document.getElementById('menu-modal');
+  const title = document.getElementById('menu-restaurant-title');
+  const container = document.getElementById('menu-items');
+  title.textContent = name || 'Menu';
+  container.innerHTML = '';
+  menu.forEach(mi=>{
+    const el = document.createElement('div');
+    el.className = 'menu-item';
+    el.innerHTML = `
+      <div style="width:64px;height:48px;background:#f5f6f8;border-radius:8px;display:flex;align-items:center;justify-content:center;color:#888">IMG</div>
+      <div class="mi-info">
+        <div style="font-weight:700">${mi.name}</div>
+        <div style="font-size:13px;color:#666;margin-top:4px">${mi.tags}</div>
+      </div>
+      <div style="display:flex;flex-direction:column;align-items:flex-end;gap:8px;">
+        <div class="item-price">$${mi.price.toFixed(2)}</div>
+        <div style="display:flex;gap:8px;align-items:center">
+          <button class="small-btn" onclick="addToCart('${mi.id}','${mi.name}',${mi.price},'${(name||'Restaurant').replace(/'/g,'\\\'')}')">Add</button>
+        </div>
+      </div>
+    `;
+    container.appendChild(el);
+  });
+  backdrop.style.display = 'flex';
+  modal.focus();
+}
+
+/* add item to cart */
+function addToCart(itemId, itemName, price, restaurant){
+  const existing = cart.find(c=>c.itemId===itemId && c.restaurant===restaurant);
+  if(existing) existing.qty++;
+  else cart.push({itemId, itemName, price, qty:1, restaurant});
+  updateCartCount();
+  // also record recent order preview (not full checkout)
+  recentOrders.unshift({id:Date.now(), restaurant, time:new Date().toLocaleString(), item:itemName});
+  if(recentOrders.length>6) recentOrders.pop();
+  renderRecentOrders();
+}
+
+/* show cart modal */
+function openCart(){
+  const backdrop = document.getElementById('cart-backdrop');
+  const container = document.getElementById('cart-items-list');
+  container.innerHTML = '';
+  if(cart.length===0){
+    container.innerHTML = '<div class="dashboard-box">Your cart is empty.</div>';
+  } else {
+    cart.forEach((c, idx)=>{
+      const el = document.createElement('div');
+      el.className = 'list-item';
+      el.innerHTML = `
+        <div style="width:48px;height:40px;border-radius:6px;background:#f3f3f3;display:flex;align-items:center;justify-content:center;color:#666">I</div>
+        <div class="item-info">
+          <div class="item-title">${c.itemName}</div>
+          <div class="item-meta">${c.restaurant} • $${c.price.toFixed(2)}</div>
+        </div>
+        <div style="display:flex;flex-direction:column;gap:6px;align-items:flex-end">
+          <div class="qty">
+            <button onclick="changeQty(${idx},-1)">-</button>
+            <div style="padding:6px 8px;border:1px solid #eee;border-radius:6px">${c.qty}</div>
+            <button onclick="changeQty(${idx},1)">+</button>
+          </div>
+          <button class="small-btn" onclick="removeFromCart(${idx})">Remove</button>
+        </div>
+      `;
+      container.appendChild(el);
+    });
+    const total = cart.reduce((s,i)=>s + i.price*i.qty,0);
+    const footer = document.getElementById('cart-total');
+    footer.textContent = 'Total: $' + total.toFixed(2);
+  }
+  backdrop.style.display = 'flex';
+}
+
+/* cart helpers */
+function changeQty(idx, delta){
+  cart[idx].qty += delta;
+  if(cart[idx].qty <= 0) cart.splice(idx,1);
+  updateCartCount();
+  openCart(); // rerender
+}
+function removeFromCart(idx){
+  cart.splice(idx,1);
+  updateCartCount();
+  openCart();
+}
+function checkoutCart(){
+  if(cart.length===0){ alert('Cart is empty'); return; }
+  // simple checkout simulation
+  alert('Order placed. Thank you!');
+  // push to recentOrders more detailed
+  cart.forEach(ci=>{
+    recentOrders.unshift({id:Date.now()+Math.random(), restaurant:ci.restaurant, time:new Date().toLocaleString(), item:ci.itemName});
+  });
+  if(recentOrders.length>10) recentOrders.length = 10;
+  cart = [];
+  updateCartCount();
+  closeBackdrop('cart-backdrop');
+  renderRecentOrders();
+}
+
+/* modal close */
+function closeBackdrop(id){
+  document.getElementById(id).style.display = 'none';
+}
+
+/* render saved, recent, favorites similar to before */
+function renderSavedRestaurants(){
+  const container = document.getElementById('saved-restaurants-list');
+  if(!container) return;
+  container.innerHTML = '';
+  sampleRestaurants.forEach(r=>{
+    const el = document.createElement('div');
+    el.className = 'list-item';
+    el.innerHTML = `
+      <img src="${r.img}" alt="${r.name}">
+      <div class="item-info">
+        <div class="item-title">${r.name}</div>
+        <div class="item-meta">${r.cat} • ${r.rating} ★</div>
+      </div>
+      <div style="display:flex;flex-direction:column;gap:6px;align-items:flex-end">
+        <button class="small-btn" onclick="openMenuFor(${r.id},'${r.name.replace(/'/g,"\\'")}')">Menu</button>
+        <button class="small-btn" onclick="toggleFavorite(${r.id})">${favorites.has(r.id)?'★':'☆'}</button>
+      </div>
+    `;
+    container.appendChild(el);
+  });
+}
+
+function renderRecentOrders(){
+  const container = document.getElementById('recent-orders-list');
+  if(!container) return;
+  container.innerHTML = '';
+  if(recentOrders.length===0){
+    container.innerHTML = '<div class="dashboard-box">No recent orders yet.</div>';
+    return;
+  }
+  recentOrders.forEach(o=>{
+    const el = document.createElement('div');
+    el.className = 'list-item';
+    el.innerHTML = `
+      <div style="width:64px;height:48px;border-radius:8px;background:#f3f3f3;display:flex;align-items:center;justify-content:center;font-weight:700;color:#888">O</div>
+      <div class="item-info">
+        <div class="item-title">${o.item ? o.item : ''} ${o.restaurant}</div>
+        <div class="item-meta">${o.time}</div>
+      </div>
+      <button class="small-btn" onclick="reorder('${o.restaurant}')">Reorder</button>
+    `;
+    container.appendChild(el);
+  });
+}
+
+function reorder(restaurant){
+  // simple simulated reorder: add a generic item
+  const order = {id:Date.now(), restaurant, time:new Date().toLocaleString(), item:'Reorder Item'};
+  recentOrders.unshift(order);
+  if(recentOrders.length>10) recentOrders.length=10;
+  renderRecentOrders();
+  alert('Reordered from ' + restaurant);
+}
+
+function renderFavorites(){
+  const container = document.getElementById('favorites-list');
+  if(!container) return;
+  container.innerHTML = '';
+  const favs = sampleRestaurants.filter(r=>favorites.has(r.id));
+  if(favs.length===0){
+    container.innerHTML = '<div class="dashboard-box">No favorites yet.</div>';
+    return;
+  }
+  favs.forEach(r=>{
+    const el = document.createElement('div');
+    el.className = 'list-item';
+    el.innerHTML = `
+      <img src="${r.img}" alt="${r.name}">
+      <div class="item-info">
+        <div class="item-title">${r.name}</div>
+        <div class="item-meta">${r.cat} • ${r.rating} ★</div>
+      </div>
+      <button class="small-btn" onclick="openMenuFor(${r.id},'${r.name.replace(/'/g,"\\'")}')">Menu</button>
+    `;
+    container.appendChild(el);
+  });
+}
+
+function renderProfileSummary(){
+  const el = document.getElementById('profile-summary');
+  if(!el) return;
+  el.innerHTML = `
+    <div style="display:flex;gap:12px;align-items:center">
+      <div style="width:64px;height:64px;background:#fff;border-radius:12px;display:flex;align-items:center;justify-content:center;font-size:22px;">U</div>
+      <div>
+        <div style="font-weight:800">Guest User</div>
+        <div style="font-size:13px;color:#666">Joined 2025 • Active</div>
+      </div>
+    </div>
+    <div style="margin-top:12px;font-size:13px;color:#444">Recent orders: ${recentOrders.length}</div>
+    <div style="margin-top:8px;font-size:13px;color:#444">Favorites: ${favorites.size}</div>
+  `;
+}
+
+function toggleFavorite(id){
+  if(favorites.has(id)) favorites.delete(id); else favorites.add(id);
+  renderFavorites();
+  renderSavedRestaurants();
+  renderDashboardSide();
+}
+
+/* initialize */
+document.addEventListener('DOMContentLoaded', ()=> {
+  showPage('home');
+  renderSavedRestaurants();
+  renderRecentOrders();
+  renderFavorites();
+  renderProfileSummary();
+  updateCartCount();
+
+  // set click on restaurant cards to open menu
+  document.querySelectorAll('.restaurant-card').forEach(card=>{
+    card.addEventListener('click', (e)=>{
+      // find name inside card
+      const nameEl = card.querySelector('h3');
+      const name = nameEl ? nameEl.innerText : 'Restaurant';
+      // try to match sampleRestaurants by name
+      const match = sampleRestaurants.find(r => name.toLowerCase().includes(r.name.split(' ')[0].toLowerCase()));
+      if(match) openMenuFor(match.id, match.name);
+      else openMenuFor(0, name);
+    }, {passive:true});
+  });
+
+  // wire modal close when clicking backdrop
+  document.getElementById('menu-modal-backdrop').addEventListener('click', (ev)=>{
+    if(ev.target.id === 'menu-modal-backdrop') closeBackdrop('menu-modal-backdrop');
+  });
+  document.getElementById('cart-backdrop').addEventListener('click', (ev)=>{
+    if(ev.target.id === 'cart-backdrop') closeBackdrop('cart-backdrop');
+  });
+});
+</script>
+</head>
+<body>
+<header>
+  <div class="header-left">
+    <div class="logo" onclick="showPage('home')">Zomato Pro</div>
+    <input id="search" class="search-field" placeholder="Search restaurants, cuisines..." oninput="(function(q){/* optional live search */})(this.value)" />
+  </div>
+
+  <div class="header-right">
+    <nav class="main-nav" aria-label="Main navigation">
+      <a href="#" onclick="showPage('home');return false;">Home</a>
+      <a href="#" onclick="showPage('dashboard');return false;">Dashboard</a>
+      <a href="#" onclick="showPage('payment');return false;">Payment</a>
+      <a href="#" onclick="showPage('account');return false;">Account</a>
+    </nav>
+
+    <button class="cart-btn" onclick="openCart()" title="View cart">
+      Cart
+      <div class="cart-count">0</div>
+    </button>
+  </div>
+</header>
+
+<!-- HOME PAGE -->
+<div id="home">
+  <!-- CATEGORY SECTION -->
+  <div class="category-section" role="tablist" aria-label="Food categories">
+    <div class="category" role="button" tabindex="0" onclick="filterCategory('all')">🔥 All</div>
+    <div class="category" role="button" tabindex="0" onclick="filterCategory('pizza')">🍕 Pizza</div>
+    <div class="category" role="button" tabindex="0" onclick="filterCategory('burger')">🍔 Burgers</div>
+    <div class="category" role="button" tabindex="0" onclick="filterCategory('healthy')">🥗 Healthy</div>
+    <div class="category" role="button" tabindex="0" onclick="filterCategory('indian')">🥘 Indian</div>
+    <div class="category" role="button" tabindex="0" onclick="filterCategory('dessert')">🍰 Dessert</div>
+    <div class="category" role="button" tabindex="0" onclick="filterCategory('cafe')">☕ Cafe</div>
+  </div>
+
+  <h2 class="section-title">Top Restaurants Near You</h2>
+  <div class="restaurant-list" id="restaurant-list">
+    <!-- Pizza -->
+    <div class="restaurant-card" data-cat="pizza">
+      <img src="https://media-cdn.grubhub.com/image/upload/d_search:browse-images:default.jpg/w_1200,q_auto:low,fl_lossy,dpr_2.0,c_fill,f_auto,h_800,g_auto/xz4j77o2cqax0urjlcte" alt="Pizza Palace">
+      <div class="info">
+        <h3>Pizza Palace</h3>
+        <span class="rating">4.5 ★</span><br>
+        <span class="tag">Pizza • Fast Delivery</span>
+      </div>
+    </div>
+
+    <div class="restaurant-card" data-cat="pizza">
+      <img src="https://www.restaurantpizzahub.be/content/images/caff0ffd-b9fb-4a8a-a474-861da2d64139.png" alt="Pizza Hub">
+      <div class="info">
+        <h3>Olive Pizza Hub</h3>
+        <span class="rating">4.3 ★</span><br>
+        <span class="tag">Pizza • Classic</span>
+      </div>
+    </div>
+
+    <div class="restaurant-card" data-cat="pizza">
+      <img src="https://static.vecteezy.com/system/resources/previews/024/263/990/non_2x/delicious-slices-of-bbq-chicken-pizza-with-chopping-meat-toppings-served-on-wooden-cutting-board-for-ready-to-eat-concept-foodgraphy-generative-ai-photo.jpg" alt="Golden Slice">
+      <div class="info">
+        <h3>Golden Slice</h3>
+        <span class="rating">4.4 ★</span><br>
+        <span class="tag">Pizza • Italian</span>
+      </div>
+    </div>
+
+    <div class="restaurant-card" data-cat="pizza">
+      <img src="https://images.deliveryhero.io/image/fd-th/LH/pfq3-hero.jpg" alt="Urban Pizza Co">
+      <div class="info">
+        <h3>Urban Pizza Co.</h3>
+        <span class="rating">4.2 ★</span><br>
+        <span class="tag">Pizza • Veg & Non-Veg</span>
+      </div>
+    </div>
+
+    <!-- Burgers -->
+    <div class="restaurant-card" data-cat="burger">
+      <img src="https://burgerhousebros.com/h-content/themes/h-theme-child/media/social-image.jpg" alt="Burger House">
+      <div class="info">
+        <h3>Burger House</h3>
+        <span class="rating">4.4 ★</span><br>
+        <span class="tag">Burgers • Fast Food</span>
+      </div>
+    </div>
+
+    <div class="restaurant-card" data-cat="burger">
+      <img src="https://www.americana.co.uk/siteassets/images/04.-insights/vegan-burger-buns/1200x675---americana-grill-marked-vegan-brioche-style-bun-3.jpg?width=568&rmode=Min&height=568" alt="Grill & Bun">
+      <div class="info">
+        <h3>Grill & Bun</h3>
+        <span class="rating">4.2 ★</span><br>
+        <span class="tag">Burgers • American</span>
+      </div>
+    </div>
+
+    <div class="restaurant-card" data-cat="burger">
+      <img src="https://thumbs.dreamstime.com/z/tastiest-mega-burgers-wooden-board-most-delicious-black-background-319695250.jpg" alt="Mega Burger Point">
+      <div class="info">
+        <h3>Mega Burger Point</h3>
+        <span class="rating">4.1 ★</span><br>
+        <span class="tag">Burgers • Premium</span>
+      </div>
+    </div>
+
+    <div class="restaurant-card" data-cat="burger">
+      <img src="https://momyumrecipes.com/wp-content/uploads/2023/06/crispy-veggie-burger-29.jpg" alt="Crispy Bite">
+      <div class="info">
+        <h3>Crispy Bite</h3>
+        <span class="rating">4.3 ★</span><br>
+        <span class="tag">Chicken • Burgers</span>
+      </div>
+    </div>
+
+    <!-- Healthy -->
+    <div class="restaurant-card" data-cat="healthy">
+      <img src="http://greenbowl.com.do/wp-content/uploads/2017/07/greenbowl-149-smokechilli.jpg" alt="Green Bowl">
+      <div class="info">
+        <h3>Green Bowl</h3>
+        <span class="rating">4.6 ★</span><br>
+        <span class="tag">Healthy • Salads</span>
+      </div>
+    </div>
+
+    <div class="restaurant-card" data-cat="healthy">
+      <img src="https://tse4.mm.bing.net/th/id/OIP.jIEJmk2dxDaQKqxZINEtsQHaE1?pid=Api&P=0&h=180" alt="Fresh & Fit">
+      <div class="info">
+        <h3>Fresh & Fit</h3>
+        <span class="rating">4.4 ★</span><br>
+        <span class="tag">Healthy • Smoothies</span>
+      </div>
+    </div>
+
+    <div class="restaurant-card" data-cat="healthy">
+      <img src="https://food.fnr.sndimg.com/content/dam/images/food/fullset/2018/1/23/0/FN_healthy-fast-food-red-robin-avocado-cobb-salad_s4x3.jpg.rend.hgtvcom.616.462.suffix/1516723515457.jpeg" alt="NutriBox">
+      <div class="info">
+        <h3>NutriBox</h3>
+        <span class="rating">4.5 ★</span><br>
+        <span class="tag">Healthy • Meal Bowls</span>
+      </div>
+    </div>
+
+    <div class="restaurant-card" data-cat="healthy">
+      <img src="https://wallpapercave.com/wp/wp3820409.jpg" alt="FitFuel">
+      <div class="info">
+        <h3>FitFuel</h3>
+        <span class="rating">4.3 ★</span><br>
+        <span class="tag">Healthy • Premium</span>
+      </div>
+    </div>
+
+    <!-- Indian -->
+    <div class="restaurant-card" data-cat="indian">
+      <img src="https://static.vecteezy.com/system/resources/thumbnails/047/337/177/small_2x/flavorful-biryani-rice-food-bowl-generate-ai-photo.jpg" alt="Royal Biryani House">
+      <div class="info">
+        <h3>Royal Biryani House</h3>
+        <span class="rating">4.5 ★</span><br>
+        <span class="tag">Indian • Biryani</span>
+      </div>
+    </div>
+
+    <div class="restaurant-card" data-cat="indian">
+      <img src="https://yt3.ggpht.com/a/AATXAJyHcAOtfHiiEWxo2dzCWQFCBD_VCQxOfOvPD4Eg=s900-c-k-c0xffffffff-no-rj-mo" alt="Desi Rasoi">
+      <div class="info">
+        <h3>Desi Rasoi</h3>
+        <span class="rating">4.3 ★</span><br>
+        <span class="tag">Indian • Thali</span>
+      </div>
+    </div>
+
+    <div class="restaurant-card" data-cat="indian">
+      <img src="https://img.cdn4dd.com/cdn-cgi/image/fit=cover,width=2000,height=720,format=auto,quality=80/https://doordash-static.s3.amazonaws.com/media/store/header/e7234b92-9cb2-428e-9484-d4b13ebaa185.jpg" alt="Punjabi Zaika">
+      <div class="info">
+        <h3>Punjabi Zaika</h3>
+        <span class="rating">4.4 ★</span><br>
+        <span class="tag">Indian • Punjabi</span>
+      </div>
+    </div>
+
+    <div class="restaurant-card" data-cat="indian">
+      <img src="https://blog.bigbasket.com/wp-content/uploads/2023/04/South-Indian-main_584509564.jpeg" alt="Swaad South">
+      <div class="info">
+        <h3>Swaad South</h3>
+        <span class="rating">4.3 ★</span><br>
+        <span class="tag">Indian • South Indian</span>
+      </div>
+    </div>
+
+    <!-- Dessert -->
+    <div class="restaurant-card" data-cat="dessert">
+      <img src="https://www.sliderrevolution.com/wp-content/uploads/revslider/Restaurant-One-Page-Website/foodcarousel7.jpg" alt="Sweet Tooth">
+      <div class="info">
+        <h3>Sweet Tooth</h3>
+        <span class="rating">4.7 ★</span><br>
+        <span class="tag">Dessert • Bakery</span>
+      </div>
+    </div>
+
+    <div class="restaurant-card" data-cat="dessert">
+      <img src="https://www.mashed.com/img/gallery/30-best-ice-cream-flavors-ranked-from-worst-to-best/l-intro-1654092923.jpg" alt="Cool Creamery">
+      <div class="info">
+        <h3>Cool Creamery</h3>
+        <span class="rating">4.6 ★</span><br>
+        <span class="tag">Dessert • Ice Cream</span>
+      </div>
+    </div>
+
+    <div class="restaurant-card" data-cat="dessert">
+      <img src="https://images.cookforyourlife.org/wp-content/uploads/2020/06/Dark-Chocolate-Brownies-shutterstock_112430981.jpg" alt="Brownie Point">
+      <div class="info">
+        <h3>Brownie Point</h3>
+        <span class="rating">4.5 ★</span><br>
+        <span class="tag">Dessert • Brownies</span>
+      </div>
+    </div>
+
+    <!-- Cafe -->
+    <div class="restaurant-card" data-cat="cafe">
+      <img src="https://images.pexels.com/photos/2575835/pexels-photo-2575835.jpeg?cs=srgb&dl=pexels-nastyasensei-2575835.jpg&fm=jpg" alt="Cafe Delight">
+      <div class="info">
+        <h3>Cafe Delight</h3>
+        <span class="rating">4.5 ★</span><br>
+        <span class="tag">Cafe • Breakfast</span>
+      </div>
+    </div>
+
+    <div class="restaurant-card" data-cat="cafe">
+      <img src="https://images6.alphacoders.com/390/390365.jpg" alt="Morning Brew">
+      <div class="info">
+        <h3>Morning Brew</h3>
+        <span class="rating">4.4 ★</span><br>
+        <span class="tag">Cafe • Coffee</span>
+      </div>
+    </div>
+
+    <div class="restaurant-card" data-cat="cafe">
+      <img src="https://c.pxhere.com/photos/ff/c5/salads_coffee_tea_breads_breakfast_cafe_yummy_pastry-1191704.jpg!d" alt="Urban Café">
+      <div class="info">
+        <h3>Urban Café</h3>
+        <span class="rating">4.3 ★</span><br>
+        <span class="tag">Cafe • Snacks</span>
+      </div>
+    </div>
+
+  </div>
+</div>
+
+<!-- ACCOUNT CREATION -->
+<div id="account">
+<h2 class="section-title">Create Your Account</h2>
+<div class="input"><input type="text" placeholder="Full Name" aria-label="Full Name"></div>
+<div class="input"><input type="email" placeholder="Email" aria-label="Email"></div>
+<div class="input"><input type="text" placeholder="Phone Number" aria-label="Phone Number"></div>
+<div class="input"><input type="text" placeholder="Full Address" aria-label="Full Address"></div>
+<button class="btn" onclick="createAccount()">
+  Create Account
+</button>
+</div>
+
+<!-- PAYMENT SECTION -->
+<!--div id="payment">
+<h2 class="section-title">Payment Options</h2>
+<div class="input"><input type="text" placeholder="Card Number" aria-label="Card Number"></div>
+<div class="input"><input type="text" placeholder="Cardholder Name" aria-label="Cardholder Name"></div>
+<div class="input"><input type="text" placeholder="Expiry Date" aria-label="Expiry Date"></div>
+<div class="input"><input type="text" placeholder="CVV" aria-label="CVV"></div>
+<button class="btn">Make Payment</button>
+</div -->
+<!-- PAYMENT SECTION -->
+<div id="payment">
+  <h2 class="section-title">Secure Payment Gateway</h2>
+
+  <div class="dashboard-box" style="margin-bottom:20px;">
+    <h3 style="margin-bottom:12px;">🛒 Order Summary</h3>
+
+    <div id="payItems"
+      style="
+        background:#f8f9fc;
+        padding:14px;
+        border-radius:12px;
+        line-height:1.8;
+        color:#444;
+        margin-bottom:14px;
+      ">
+      Cart empty
+    </div>
+
+    <div
+      style="
+        display:flex;
+        justify-content:space-between;
+        align-items:center;
+        font-size:20px;
+        font-weight:700;
+      ">
+      <span>Total Amount</span>
+      <span id="payTotal" style="color:#ff4e50;">$0.00</span>
+    </div>
+  </div>
+
+  <!-- PAYMENT OPTIONS -->
+  <div class="dashboard-box">
+
+    <h3 style="margin-bottom:14px;">💳 Choose Payment Method</h3>
+
+    <div
+      style="
+        display:grid;
+        grid-template-columns:repeat(auto-fit,minmax(180px,1fr));
+        gap:12px;
+      ">
+
+      <!-- CARD -->
+      <div class="pay-option active"
+        onclick="pickPay('card',this)"
+        style="
+          padding:18px;
+          border-radius:14px;
+          background:linear-gradient(135deg,#ffffff,#f5f7fb);
+          border:2px solid #ff4e50;
+          cursor:pointer;
+          transition:0.3s;
+          text-align:center;
+          box-shadow:0 4px 12px rgba(0,0,0,0.05);
+        ">
+        <div style="font-size:34px;">💳</div>
+        <div style="font-weight:700;margin-top:8px;">Credit / Debit Card</div>
+        <div style="font-size:13px;color:#666;margin-top:4px;">
+          Visa, Mastercard, RuPay
+        </div>
+      </div>
+
+      <!-- UPI -->
+      <div class="pay-option"
+        onclick="pickPay('upi',this)"
+        style="
+          padding:18px;
+          border-radius:14px;
+          background:linear-gradient(135deg,#ffffff,#f5f7fb);
+          border:2px solid transparent;
+          cursor:pointer;
+          transition:0.3s;
+          text-align:center;
+          box-shadow:0 4px 12px rgba(0,0,0,0.05);
+        ">
+        <div style="font-size:34px;">📱</div>
+        <div style="font-weight:700;margin-top:8px;">UPI Payment</div>
+        <div style="font-size:13px;color:#666;margin-top:4px;">
+          GPay, PhonePe, Paytm
+        </div>
+      </div>
+
+      <!-- NET BANKING -->
+      <div class="pay-option"
+        onclick="pickPay('net',this)"
+        style="
+          padding:18px;
+          border-radius:14px;
+          background:linear-gradient(135deg,#ffffff,#f5f7fb);
+          border:2px solid transparent;
+          cursor:pointer;
+          transition:0.3s;
+          text-align:center;
+          box-shadow:0 4px 12px rgba(0,0,0,0.05);
+        ">
+        <div style="font-size:34px;">🏦</div>
+        <div style="font-weight:700;margin-top:8px;">Net Banking</div>
+        <div style="font-size:13px;color:#666;margin-top:4px;">
+          All Major Banks
+        </div>
+      </div>
+
+      <!-- COD -->
+      <div class="pay-option"
+        onclick="pickPay('cod',this)"
+        style="
+          padding:18px;
+          border-radius:14px;
+          background:linear-gradient(135deg,#ffffff,#f5f7fb);
+          border:2px solid transparent;
+          cursor:pointer;
+          transition:0.3s;
+          text-align:center;
+          box-shadow:0 4px 12px rgba(0,0,0,0.05);
+        ">
+        <div style="font-size:34px;">💵</div>
+        <div style="font-weight:700;margin-top:8px;">Cash on Delivery</div>
+        <div style="font-size:13px;color:#666;margin-top:4px;">
+          Pay After Delivery
+        </div>
+      </div>
+
+    </div>
+
+    <!-- DYNAMIC PAYMENT INPUTS -->
+    <div id="payInputs" style="margin-top:22px;">
+
+      <!-- DEFAULT CARD FORM -->
+      <div class="pay-box active"
+        style="
+          background:#f8f9fc;
+          padding:18px;
+          border-radius:14px;
+          border:1px solid #eee;
+        ">
+
+        <label style="font-weight:600;">Card Number</label>
+
+        <input id="cardNum"
+          type="text"
+          maxlength="23"
+          placeholder="xxxx xxxx xxxx xxxx"
+          oninput="formatCard(this)"
+          style="
+            width:100%;
+            margin-top:8px;
+            padding:12px;
+            border-radius:10px;
+            border:1px solid #ddd;
+            margin-bottom:16px;
+          ">
+
+        <div style="display:flex;gap:12px;flex-wrap:wrap;">
+
+          <div style="flex:1;min-width:140px;">
+            <label style="font-weight:600;">Expiry Date</label>
+
+            <input id="cardExp"
+              type="text"
+              maxlength="5"
+              placeholder="MM/YY"
+              style="
+                width:100%;
+                margin-top:8px;
+                padding:12px;
+                border-radius:10px;
+                border:1px solid #ddd;
+              ">
+          </div>
+
+          <div id="cvvArea"
+            style="
+              flex:1;
+              min-width:140px;
+              display:none;
+            ">
+
+            <label style="font-weight:600;">CVV</label>
+
+            <input id="cardCvv"
+              type="password"
+              maxlength="3"
+              placeholder="CVV"
+              style="
+                width:100%;
+                margin-top:8px;
+                padding:12px;
+                border-radius:10px;
+                border:1px solid #ddd;
+              ">
+          </div>
+
+        </div>
+
+      </div>
+
+    </div>
+
+    <!-- PAYMENT BUTTON -->
+    <button class="btn"
+      onclick="confirmPayment()"
+      style="
+        width:50%;
+        margin-top:24px;
+        padding:14px;
+        font-size:17px;
+        font-weight:700;
+        border-radius:14px;
+        background:linear-gradient(45deg,#ff4e50,#ff914d);
+        box-shadow:0 8px 20px rgba(255,78,80,0.3);
+      ">
+      🔒 Confirm & Pay
+    </button>
+
+  </div>
+</div>
+
+<!-- DASHBOARD -->
+<div id="dashboard">
+  <h2 class="section-title">Your Dashboard</h2>
+  <div class="dashboard-grid" role="region" aria-label="User dashboard">
+    <div class="dashboard-main">
+      <div class="dashboard-box">
+        <strong>Quick Actions</strong>
+        <div style="display:flex;gap:8px;margin-top:10px;">
+          <button class="small-btn primary" onclick="showPage('home')">Explore Restaurants</button>
+          <button class="small-btn" onclick="showPage('account')">Account</button>
+          <button class="small-btn" onclick="showPage('payment')">Payments</button>
+        </div>
+      </div>
+
+      <div class="dashboard-box">
+        <strong>Saved Restaurants</strong>
+        <div id="saved-restaurants-list" class="list" style="margin-top:10px"></div>
+      </div>
+
+      <div class="dashboard-box">
+        <strong>Recent Orders</strong>
+        <div id="recent-orders-list" class="list" style="margin-top:10px"></div>
+      </div>
+    </div>
+
+    <aside class="dashboard-side" aria-label="Sidebar">
+      <div id="profile-summary" class="dashboard-box"></div>
+
+      <div class="dashboard-box">
+        <strong>Favorites</strong>
+        <div id="favorites-list" class="list" style="margin-top:10px"></div>
+      </div>
+
+      <div class="dashboard-box">
+
+  <strong>Stats</strong>
+
+  <div style="display:flex;gap:12px;margin-top:8px">
+
+    <div style="
+      flex:1;
+      background:#fff;
+      padding:10px;
+      border-radius:8px;
+      text-align:center
+    ">
+
+      <div class="stats-number"
+           style="font-weight:800">
+        0
+      </div>
+
+      <div style="
+        font-size:12px;
+        color:#666
+      ">
+        Orders
+      </div>
+
+    </div>
+
+    <div style="
+      flex:1;
+      background:#fff;
+      padding:10px;
+      border-radius:8px;
+      text-align:center
+    ">
+
+      <div class="stats-number"
+           style="font-weight:800">
+        0
+      </div>
+
+      <div style="
+        font-size:12px;
+        color:#666
+      ">
+        Saved
+      </div>
+
+    </div>
+
+  </div>
+
+</div>
+          </div>
+        </div>
+      </div>
+    </aside>
+  </div>
+</div>
+
+<!-- menu modal -->
+<div id="menu-modal-backdrop" class="modal-backdrop" style="display:none">
+  <div id="menu-modal" class="modal" role="dialog" aria-modal="true">
+    <div class="modal-head">
+      <h3 id="menu-restaurant-title">Menu</h3>
+      <div>
+        <button class="small-btn" onclick="closeBackdrop('menu-modal-backdrop')">Close</button>
+      </div>
+    </div>
+    <div id="menu-items" class="menu-grid"></div>
+  </div>
+</div>
+
+<!-- cart modal -->
+<div id="cart-backdrop" class="modal-backdrop" style="display:none">
+  <div class="modal" role="dialog" aria-modal="true">
+    <div class="modal-head">
+      <h3>Cart</h3>
+      <div>
+        <button class="small-btn" onclick="closeBackdrop('cart-backdrop')">Close</button>
+      </div>
+    </div>
+    <div id="cart-items-list" style="margin-top:10px"></div>
+    <div style="display:flex;justify-content:space-between;align-items:center;margin-top:12px">
+      <div id="cart-total" style="font-weight:700">Total: $0.00</div>
+      <div>
+        <button class="small-btn" onclick="checkoutCart()">Checkout</button>
+      </div>
+    </div>
+  </div>
+</div>
+<script>
+
+/* =========================
+   PAYMENT SYSTEM
+========================= */
+
+let selectedPayment = 'card';
+
+/* helper selector */
+function $(el){
+  return document.querySelector(el);
+}
+
+/* money formatter */
+function money(v){
+  return '$' + Number(v).toFixed(2);
+}
+
+/* =========================
+   OPEN PAYMENT PAGE
+========================= */
+function proceedToPayment(){
+
+  if(cart.length === 0){
+    alert('Cart empty');
+    return;
+  }
+
+  showPage('payment');
+
+  renderPaymentSummary();
+
+  pickPay('card', document.querySelector('.pay-option'));
+}
+
+/* =========================
+   PAYMENT SUMMARY
+========================= */
+function renderPaymentSummary(){
+
+  const itemsEl = $('#payItems');
+  const totalEl = $('#payTotal');
+
+  if(cart.length === 0){
+
+    itemsEl.innerHTML = `
+      <div style="
+        text-align:center;
+        padding:20px;
+        color:#777;
+      ">
+        Cart empty
+      </div>
+    `;
+
+    totalEl.innerText = money(0);
+
+    return;
+  }
+
+  let html = '';
+
+  cart.forEach(item => {
+
+    html += `
+      <div style="
+        display:flex;
+        justify-content:space-between;
+        align-items:center;
+        padding:12px 0;
+        border-bottom:1px solid #eee;
+      ">
+
+        <div>
+          <div style="font-weight:700;">
+            ${item.itemName}
+          </div>
+
+          <div style="
+            font-size:13px;
+            color:#777;
+            margin-top:4px;
+          ">
+            Qty: ${item.qty}
+          </div>
+        </div>
+
+        <div style="
+          font-weight:700;
+          color:#ff4e50;
+        ">
+          ${money(item.price * item.qty)}
+        </div>
+
+      </div>
+    `;
+
+  });
+
+  itemsEl.innerHTML = html;
+
+  const total = cart.reduce((sum, item) => {
+    return sum + (item.price * item.qty);
+  }, 0);
+
+  totalEl.innerText = money(total);
+}
+
+/* =========================
+   SELECT PAYMENT METHOD
+========================= */
+function pickPay(type, el){
+
+  selectedPayment = type;
+
+  document.querySelectorAll('.pay-option').forEach(option => {
+
+    option.style.border = '2px solid transparent';
+    option.style.transform = 'scale(1)';
+    option.style.background =
+      'linear-gradient(135deg,#ffffff,#f5f7fb)';
+
+  });
+
+  if(el){
+
+    el.style.border = '2px solid #ff4e50';
+    el.style.transform = 'scale(1.03)';
+    el.style.background =
+      'linear-gradient(135deg,#fff5f5,#fff)';
+
+  }
+
+  const payInputs = $('#payInputs');
+
+  /* ======================
+     UPI
+  ====================== */
+  if(type === 'upi'){
+
+    payInputs.innerHTML = `
+
+      <div class="pay-box active"
+        style="
+          background:#f8f9fc;
+          padding:18px;
+          border-radius:14px;
+          border:1px solid #eee;
+        ">
+
+        <label style="font-weight:600;">
+          Enter UPI ID
+        </label>
+
+        <input
+          id="upiId"
+          type="text"
+          placeholder="yourname@upi"
+          style="
+            width:100%;
+            margin-top:10px;
+            padding:12px;
+            border-radius:10px;
+            border:1px solid #ddd;
+          "
+        >
+
+      </div>
+
+    `;
+
+  }
+
+  /* ======================
+     CARD
+  ====================== */
+  else if(type === 'card'){
+
+    payInputs.innerHTML = `
+
+      <div class="pay-box active"
+        style="
+          background:#f8f9fc;
+          padding:18px;
+          border-radius:14px;
+          border:1px solid #eee;
+        ">
+
+        <label style="font-weight:600;">
+          Card Number
+        </label>
+
+        <input
+          id="cardNum"
+          type="text"
+          maxlength="23"
+          placeholder="xxxx xxxx xxxx xxxx"
+          oninput="formatCard(this)"
+          style="
+            width:100%;
+            margin-top:10px;
+            padding:12px;
+            border-radius:10px;
+            border:1px solid #ddd;
+            margin-bottom:18px;
+          "
+        >
+
+        <div style="
+          display:flex;
+          gap:12px;
+          flex-wrap:wrap;
+        ">
+
+          <div style="
+            flex:1;
+            min-width:140px;
+          ">
+
+            <label style="font-weight:600;">
+              Expiry Date
+            </label>
+
+            <input
+              id="cardExp"
+              type="text"
+              maxlength="5"
+              placeholder="MM/YY"
+              style="
+                width:100%;
+                margin-top:10px;
+                padding:12px;
+                border-radius:10px;
+                border:1px solid #ddd;
+              "
+            >
+
+          </div>
+
+          <div id="cvvArea"
+            style="
+              flex:1;
+              min-width:140px;
+              display:none;
+            ">
+
+            <label style="font-weight:600;">
+              CVV
+            </label>
+
+            <input
+              id="cardCvv"
+              type="password"
+              maxlength="3"
+              placeholder="CVV"
+              style="
+                width:100%;
+                margin-top:10px;
+                padding:12px;
+                border-radius:10px;
+                border:1px solid #ddd;
+              "
+            >
+
+          </div>
+
+        </div>
+
+      </div>
+
+    `;
+
+  }
+
+  /* ======================
+     NET BANKING
+  ====================== */
+  else if(type === 'net'){
+
+    payInputs.innerHTML = `
+
+      <div class="pay-box active"
+        style="
+          background:#f8f9fc;
+          padding:18px;
+          border-radius:14px;
+          border:1px solid #eee;
+        ">
+
+        <label style="font-weight:600;">
+          Select Your Bank
+        </label>
+
+        <select
+          id="bankSel"
+          style="
+            width:100%;
+            margin-top:10px;
+            padding:12px;
+            border-radius:10px;
+            border:1px solid #ddd;
+          "
+        >
+
+          <option>HDFC Bank</option>
+          <option>ICICI Bank</option>
+          <option>SBI Bank</option>
+          <option>Axis Bank</option>
+          <option>Kotak Bank</option>
+
+        </select>
+
+      </div>
+
+    `;
+
+  }
+
+  /* ======================
+     CASH ON DELIVERY
+  ====================== */
+  else if(type === 'cod'){
+
+    payInputs.innerHTML = `
+
+      <div class="pay-box active"
+        style="
+          background:#f8f9fc;
+          padding:18px;
+          border-radius:14px;
+          border:1px solid #eee;
+        ">
+
+        <div style="
+          font-size:15px;
+          color:#555;
+          line-height:1.8;
+        ">
+          💵 Cash on Delivery selected.<br>
+          Pay directly to delivery partner.
+        </div>
+
+      </div>
+
+    `;
+
+  }
+
+}
+
+/* =========================
+   CARD FORMATTER
+========================= */
+function formatCard(el){
+
+  let value = el.value
+    .replace(/\s+/g,'')
+    .replace(/[^\d]/g,'');
+
+  const parts = value.match(/.{1,4}/g) || [];
+
+  el.value = parts.join(' ');
+
+  const digits = value.length;
+
+  const cvvArea = $('#cvvArea');
+
+  if(cvvArea){
+
+    cvvArea.style.display =
+      digits === 16 ? 'block' : 'none';
+
+  }
+
+}
+
+/* =========================
+   CONFIRM PAYMENT
+========================= */
+function confirmPayment(){
+
+  if(selectedPayment === ''){
+
+    alert('Select payment method');
+    return;
+
+  }
+
+  /* CARD VALIDATION */
+
+  if(selectedPayment === 'card'){
+
+    const num =
+      ($('#cardNum') || {}).value || '';
+
+    const digits =
+      num.replace(/\s/g,'').length;
+
+    if(digits !== 16){
+
+      alert('Enter valid 16-digit card number');
+      return;
+
+    }
+
+    const exp =
+      ($('#cardExp') || {}).value || '';
+
+    if(exp.length !== 5){
+
+      alert('Enter expiry date');
+      return;
+
+    }
+
+    const cvv =
+      ($('#cardCvv') || {}).value || '';
+
+    if(cvv.length !== 3){
+
+      alert('Enter valid CVV');
+      return;
+
+    }
+
+  }
+
+  /* UPI VALIDATION */
+
+  if(selectedPayment === 'upi'){
+
+    const upi =
+      ($('#upiId') || {}).value || '';
+
+    if(!upi.includes('@')){
+
+      alert('Enter valid UPI ID');
+      return;
+
+    }
+
+  }
+
+  /* TOTAL */
+
+  const total = cart.reduce((sum,item)=>{
+    return sum + (item.price * item.qty);
+  },0);
+
+  /* SAVE ORDERS */
+
+  cart.forEach(ci => {
+
+    recentOrders.unshift({
+
+      id : Date.now() + Math.random(),
+
+      restaurant : ci.restaurant,
+
+      item : ci.itemName,
+
+      qty : ci.qty,
+
+      amount : ci.price * ci.qty,
+
+      time : new Date().toLocaleString()
+
+    });
+
+  });
+
+  /* SUCCESS */
+
+  alert(
+    '🎉 Payment Successful!\n\n' +
+    'Amount Paid: ' + money(total)
+  );
+
+  /* CLEAR CART */
+
+  cart = [];
+
+  updateCartCount();
+
+  renderPaymentSummary();
+
+  /* UPDATE DASHBOARD */
+
+  renderRecentOrders();
+
+  renderFavorites();
+
+  renderSavedRestaurants();
+
+  renderProfileSummary();
+
+  updateDashboardStats();
+
+  /* REDIRECT */
+
+  showPage('dashboard');
+
+}
+  
+
+/* =========================
+   AUTO DEFAULT PAYMENT
+========================= */
+document.addEventListener('DOMContentLoaded', ()=>{
+
+  const firstPay =
+    document.querySelector('.pay-option');
+
+  if(firstPay){
+
+    pickPay('card', firstPay);
+
+  }
+
+});
+/* =========================
+   LINK CART TO PAYMENT
+========================= */
+
+function checkoutCart(){
+
+  /* CHECK EMPTY CART */
+  if(cart.length === 0){
+
+    alert('Your cart is empty');
+    return;
+
+  }
+
+  /* CLOSE CART MODAL */
+  closeBackdrop('cart-backdrop');
+
+  /* OPEN PAYMENT PAGE */
+  showPage('payment');
+
+  /* RENDER PAYMENT SUMMARY */
+  renderPaymentSummary();
+
+  /* AUTO SELECT CARD PAYMENT */
+  const firstPay =
+    document.querySelector('.pay-option');
+
+  if(firstPay){
+
+    pickPay('card', firstPay);
+
+  }
+
+}
+
+</script>
+<script>
+
+/* =========================
+   USER ACCOUNT DATA
+========================= */
+letuserData = {
+  fullName : 'Guest User',
+  email : '',
+  phone : '',
+  address : ''
+};
+
+
+
+
+/* =========================
+   USER ACCOUNT DATA
+========================= */
+
+letuserData = {
+  fullName : 'Guest User',
+  email : '',
+  phone : '',
+  address : ''
+};
+
+/* =========================
+   CREATE ACCOUNT
+========================= */
+
+function createAccount(){
+
+  const inputs =
+    document.querySelectorAll('#account input');
+
+  const fullName = inputs[0].value.trim();
+  const email    = inputs[1].value.trim();
+  const phone    = inputs[2].value.trim();
+  const address  = inputs[3].value.trim();
+
+  /* VALIDATION */
+
+  if(fullName === ''){
+
+    alert('Enter full name');
+    return;
+
+  }
+
+  if(email === ''){
+
+    alert('Enter email');
+    return;
+
+  }
+
+  if(phone === ''){
+
+    alert('Enter phone number');
+    return;
+
+  }
+
+  if(address === ''){
+
+    alert('Enter address');
+    return;
+
+  }
+
+  /* SAVE DATA */
+
+  userData.fullName = fullName;
+  userData.email    = email;
+  userData.phone    = phone;
+  userData.address  = address;
+
+  /* LOCAL STORAGE */
+
+  localStorage.setItem(
+    'zomatoUser',
+    JSON.stringify(userData)
+  );
+
+  /* UPDATE DASHBOARD */
+
+  renderProfileSummary();
+
+  alert('✅ Account Created Successfully');
+
+  showPage('dashboard');
+
+}
+
+/* =========================
+   LOAD ACCOUNT
+========================= */
+
+function loadAccount(){
+
+  const saved =
+    localStorage.getItem('zomatoUser');
+
+  if(saved){
+
+    userData = JSON.parse(saved);
+
+  }
+
+}
+
+/* =========================
+   UPDATE DASHBOARD PROFILE
+========================= */
+
+function renderProfileSummary(){
+
+  constel =document.getElementById('profile-summary');
+
+  if(!el) return;
+
+  const totalOrders = recentOrders.length;
+
+  const totalFavs = favorites.size;
+
+  el.innerHTML = `
+
+    <div style="
+      display:flex;
+      gap:14px;
+      align-items:center;
+    ">
+
+      <div style="
+        width:70px;
+        height:70px;
+        border-radius:16px;
+        background:linear-gradient(45deg,#ff4e50,#ff914d);
+        color:#fff;
+        display:flex;
+        align-items:center;
+        justify-content:center;
+        font-size:28px;
+        font-weight:700;
+      ">
+        ${userData.fullName.charAt(0).toUpperCase()}
+      </div>
+
+      <div>
+
+        <div style="
+          font-size:20px;
+          font-weight:800;
+        ">
+          ${userData.fullName}
+        </div>
+
+        <div style="
+          font-size:13px;
+          color:#666;
+          margin-top:4px;
+        ">
+          ${userData.email}
+        </div>
+
+        <div style="
+          font-size:13px;
+          color:#666;
+          margin-top:2px;
+        ">
+          ${userData.phone}
+        </div>
+
+      </div>
+
+    </div>
+
+    <div style="
+      margin-top:18px;
+      padding-top:14px;
+      border-top:1px solid #eee;
+      font-size:14px;
+      color:#555;
+      line-height:1.8;
+    ">
+
+      📍 ${userData.address}<br>
+
+      🛒 Orders: ${totalOrders}<br>
+
+      ❤️ Favorites: ${totalFavs}
+
+    </div>
+
+  `;
+
+}
+
+/* =========================
+   UPDATE DASHBOARD STATS
+========================= */
+
+function updateDashboardStats(){
+
+  const stats =
+    document.querySelectorAll('#dashboard .stats-number');
+
+  if(stats.length >= 2){
+
+    stats[0].innerText = recentOrders.length;
+
+    stats[1].innerText = favorites.size;
+
+  }
+
+}
+
+/* =========================
+   AUTO LOAD
+========================= */
+
+document.addEventListener('DOMContentLoaded', ()=>{
+
+  loadAccount();
+
+  renderProfileSummary();
+
+  updateDashboardStats();
+
+});
+
+</script>
+
+
+<script>
+function loadAccount(){
+
+  const saved =
+    localStorage.getItem('zomatoUser');
+
+  if(saved){
+
+    userData = JSON.parse(saved);
+
+  }
+
+}
+
+/* =========================
+   UPDATE DASHBOARD PROFILE
+========================= */
+
+function renderProfileSummary(){
+
+  const el =
+    document.getElementById('profile-summary');
+
+  if(!el) return;
+
+  const totalOrders = recentOrders.length;
+
+  const totalFavs = favorites.size;
+
+  const totalSpent =
+    recentOrders.reduce((sum,o)=>{
+
+      return sum + (o.amount || 0);
+
+    },0);
+
+  el.innerHTML = `
+
+    <div style="
+      display:flex;
+      gap:14px;
+      align-items:center;
+    ">
+
+      <div style="
+        width:70px;
+        height:70px;
+        border-radius:16px;
+        background:linear-gradient(45deg,#ff4e50,#ff914d);
+        color:#fff;
+        display:flex;
+        align-items:center;
+        justify-content:center;
+        font-size:28px;
+        font-weight:700;
+      ">
+        ${userData.fullName.charAt(0).toUpperCase()}
+      </div>
+
+      <div>
+
+        <div style="
+          font-size:20px;
+          font-weight:800;
+        ">
+          ${userData.fullName}
+        </div>
+
+        <div style="
+          font-size:13px;
+          color:#666;
+          margin-top:4px;
+        ">
+          ${userData.email}
+        </div>
+
+        <div style="
+          font-size:13px;
+          color:#666;
+          margin-top:2px;
+        ">
+          ${userData.phone}
+        </div>
+
+      </div>
+
+    </div>
+
+    <div style="
+      margin-top:18px;
+      padding-top:14px;
+      border-top:1px solid #eee;
+      line-height:2;
+      color:#555;
+      font-size:14px;
+    ">
+
+      📍 ${userData.address}<br>
+
+      🛒 Total Orders :
+      <strong>${totalOrders}</strong><br>
+
+      ❤️ Favorite Restaurants :
+      <strong>${totalFavs}</strong><br>
+
+      💰 Total Spent :
+      <strong>${money(totalSpent)}</strong>
+
+    </div>
+
+  }`;
+}
+document.addEventListener('DOMContentLoaded', ()=>{
+
+  loadAccount();
+
+  renderProfileSummary();
+
+  updateDashboardStats();
+
+});
+function toggleFavorite(id){
+
+  if(favorites.has(id)){
+
+    favorites.delete(id);
+
+  }else{
+
+    favorites.add(id);
+
+  }
+
+  /* UPDATE UI */
+
+  renderFavorites();
+
+  renderSavedRestaurants();
+
+  renderProfileSummary();
+
+  updateDashboardStats();
+
+}
+function updateDashboardStats(){
+
+  const stats =
+    document.querySelectorAll('.stats-number');
+
+  if(stats.length >= 2){
+
+    stats[0].innerText =
+      recentOrders.length;
+
+    stats[1].innerText =
+      favorites.size;
+
+  }
+
+}
+</script>
+
+<footer>© 2025 Zomato Ultra Clone — Fully Interactive</footer>
+</body>
+</html>
